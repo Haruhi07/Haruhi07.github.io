@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>A Simple Theoretical Model of Importance for Summarization</title>
+    <url>/2021/09/01/20210901/</url>
+    <content><![CDATA[<h3 id="author">Author</h3>
+<ul>
+<li>Maxime Peyard, EPFL</li>
+</ul>
+<p><br></p>
+<h3 id="abstract-from-the-paper">Abstract from the Paper</h3>
+<blockquote>
+<p>Research on summarization has mainly been driven by empirical approaches, crafting systems to perform well on standard datasets with the notion of information Importance remaining latent. We argue that establishing theoretical models of <em>Importance</em> will advance our understanding of the task and help to further improve summarization systems. To this end, we propose simple but rigorous definitions of several concepts that were previously used only intuitively in summarization: <em>Redundancy, Relevance, and Informativeness</em>. Importance arises as a single quantity naturally unifying these concepts. Additionally, we provide intuitions to interpret the proposed quantities and experiments to demonstrate the potential of the framework to inform and guide subsequent works.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+</blockquote>
+<p><br></p>
+<h3 id="key-points">Key points</h3>
+<ul>
+<li><strong><em>Summarization is a lossy semantic compression depending on background knowledge.</em></strong><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> The author introduced concepts from Information Theory to evaluate the semantic loss instead of using vague empirical evaluation metrics.</li>
+<li>The Importance of a summary consists of Redundancy, Relevance and Informativeness</li>
+<li>Building a theoretical model of Improtance could accelerate future works on summarisation task.</li>
+</ul>
+<span id="more"></span>
+<p><br></p>
+<h3 id="assumption">Assumption</h3>
+<p>Follwing the general assumptions in Information Theory, the proposed framework bases on the postulate that the atomic piece of information exists, which is called <strong><em>semantic unit</em></strong>. Hence, an input text <span class="math inline">\(X\)</span> can be presented by a probility distribution <span class="math inline">\(P_X\)</span> over the whole set of semantic units <span class="math inline">\(\Omega\)</span>.</p>
+<p>In this paper, the author interpreted the meaning of distribution from 3 different angles:</p>
+<ul>
+<li>Frequency distribution of semantic units in the text</li>
+<li>The normalized likelihood that <span class="math inline">\(X\)</span> entails an unit <span class="math inline">\(\omega_i\)</span></li>
+<li>The normalized contribution that <span class="math inline">\(\omega_i\)</span> gives to <span class="math inline">\(X\)</span></li>
+</ul>
+<p>Therefore, the author stated that</p>
+<blockquote>
+<p><strong><em>Meaning arises from a set of independent and discrete units</em></strong>.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+</blockquote>
+<p>And the Redundancy, Relevance and Informativeness could be calculated on these atomic semantic units to evaluate generated summaries.</p>
+<h3 id="measure-metrics">Measure Metrics</h3>
+<p>The author first explained how to evaluate <em>Redundancy, Relevance and Informativeness</em> of given summaries. Following their requirements, the author then derived the formula of <em>Importance</em>.</p>
+<h4 id="redundancy">Redundancy</h4>
+<p>According to Shannon's Information Theory, the amount of information contained in summaries can be measured by entropy:</p>
+<p><span class="math display">\[H(S) = -\sum_{\omega_i}P_S(\omega_i) \cdot \log{P_S(\omega_i)} \tag{1}\label{entropy}\]</span></p>
+<p>Entropy function would reach maximum when the given distribution is uniform, which means each semantic unit appears in the text equally. <strong><em>The more redundant the content is, the less value <span class="math inline">\(\eqref{entropy}\)</span> will be.</em></strong> So, we can use the negative entropy to evaluate the redundancy:</p>
+<p><span class="math display">\[Red(s) = -H(S) \tag{2}\label{redundancy}\]</span></p>
+<h4 id="relevance">Relevance</h4>
+<p>In summarisation task, undoutedly, system outputs should be coherent and consistent with the source document(s). In other words, the generated summaries are supposed to be semantically similar to input articles, which means they ought to have analogous probability distribution over the semantic unit sets <span class="math inline">\(\Omega\)</span>, i.e., <span class="math inline">\(P_S\approx P_D\)</span>.</p>
+<p>In both NLP and Information Theory, Cross Entropy is often used to evaluate how diverse two distribitions are. It can be interpreted as the average suprise of observing the summary <span class="math inline">\(S\)</span> while expecting the input document <span class="math inline">\(D\)</span>. Therefore, the <em>Relevance</em> can be evaluated by the additive inverse of Cross Entropy:</p>
+<p><span class="math display">\[Rel(S,D) = -CE(S,D) = \sum_{\omega_i}P_S(\omega_i) \cdot \log{P_D(\omega_i)} \tag{3}\label{relevance}\]</span></p>
+<h5 id="kl-divergence">KL Divergence</h5>
+<p>In Information Theory, the information loss (uncertainty) of inferencing <span class="math inline">\(D\)</span> by observing <span class="math inline">\(S\)</span> is called <strong>Kullback–Leibler divergence</strong> (KL divergence). From its definition, we can derive its formula:</p>
+<p><span class="math display">\[KL(S||D) = CE(S,D) - H(S)\]</span></p>
+<p>Thus, in summarisation task, we have:</p>
+<p><span class="math display">\[-KL(S||D) = Rel(S,D) - Red(S) \tag{4}\label{KL}\]</span></p>
+<p>When training a summariser via minimising KL divergence, it will maximise <em>Relevance</em> and minimise <em>Redundancy</em> at the same time.</p>
+<blockquote>
+<p>In fact, this is an instance of the Kullback Minimum Description Principle (MDI)<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>, a generalization of the Maximum Entropy Principle<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>: the summary minimizing the KL divergence is the least biased (i.e., least redundant or with highest entropy) summary matching <span class="math inline">\(D\)</span>. In other words, this summary fits <span class="math inline">\(D\)</span> while inducing a minimum amount of new information. Indeed, any new information is necessarily biased since it does not arise from observations in the sources. The MDI principle and KL divergence unify Redundancy and Relevance.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+</blockquote>
+<h4 id="informativeness">Informativeness</h4>
+<p>Sometimes, users have their own knowledge background <span class="math inline">\(K\)</span>. An informative summary should contain information that is not awared by the user. From the semantic unit perspective, <span class="math inline">\(P_S\)</span> should vary from <span class="math inline">\(P_K\)</span>. Hence, Cross Entropy plays a role here:</p>
+<p><span class="math display">\[Inf(S,K) = -\sum_{\omega_i}P_S(\omega_i) \cdot \log{P_K(\omega_i)} \tag{5}\label{informativeness}\]</span></p>
+<p>Opposite to <em>Relevance</em>, we expect a high Cross Entropy value this time, which means a large amount of new information brought by the summary. Through <em>Informativeness</em>, interaction is enabled by setting a low probabability to users' queries <span class="math inline">\(Q\)</span>.</p>
+<h4 id="importance">Importance</h4>
+<p>To sum these measurement up by weight, we need to calculate their relative importance. According to the definition, a good summary should contain information from <span class="math inline">\(D\)</span> and bring new information comparing to users' background knowledge <span class="math inline">\(K\)</span>. In other words, we expect semantic units that are frequent in <span class="math inline">\(D\)</span> but rare in <span class="math inline">\(K\)</span>. The author formulated it as below:</p>
+<ul>
+<li><em>Informativeness</em> <span class="math inline">\(\forall i \neq j\)</span>, if <span class="math inline">\(d_i = d_j\)</span> and <span class="math inline">\(k_i &gt; k_j\)</span> then <span class="math inline">\(f(d_i, k_i) &lt; f(d_j, k_j)\)</span></li>
+<li><em>Relevance</em> <span class="math inline">\(\forall i \neq j\)</span>, if <span class="math inline">\(d_i &gt; d_j\)</span> and <span class="math inline">\(k_i = k_j\)</span> then <span class="math inline">\(f(d_i, k_i) &gt; f(d_j, k_j)\)</span></li>
+<li>Additivity <span class="math inline">\(I(f(d_i, k_i)) \equiv \alpha I(d_i) + \beta I(k_i)\)</span></li>
+<li>Normalisation <span class="math inline">\(\sum_i f(d_i, k_i) = 1\)</span></li>
+</ul>
+<p><span class="math inline">\(f\)</span> is the importance of unit <span class="math inline">\(\omega_i\)</span> considering <span class="math inline">\(D\)</span> and <span class="math inline">\(K\)</span>. And <span class="math inline">\(f\)</span> can be proved that it has the form:</p>
+<p><span class="math display">\[P_{\frac{D}{K}}(\omega_i) = \frac{1}{C} \cdot \frac{d^{\alpha}_i}{k^{\beta}_i} \tag{6}\label{summary}\]</span></p>
+<p><span class="math inline">\(C\)</span> is the normalising constant. <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are the strength of <em>Relevance</em> and <em>Informativeness</em> respectively.</p>
+<p>The candidate summaries' distributions should appproximate <span class="math inline">\(P_{\frac{D}{K}}(\omega_i)\)</span>, which reflect the relative importance of each units appearing in the summaries. We can measure the ability of summariser by its entropy <span class="math inline">\(H(P_{\frac{D}{K}}(\omega_i))\)</span>, which is proportional to the potential number of good summaries.</p>
+<p>Considering the requirement of redundancy, the best summary should be the solution of:</p>
+<p><span class="math display">\[S^* = argmin_S KL(S||P_{\frac{D}{K}}(\omega_i)) \tag{7}\label{best_s}\]</span></p>
+<p>Therefore, we note <em>Importance</em> as:</p>
+<p><span class="math display">\[\theta_I(S,D,K) = -KL(S||P_{\frac{D}{K}}(\omega_i)) \equiv -Red(S) + \alpha Rel(S,D) + \beta Inf(S,K) \tag{8}\label{importance}\]</span></p>
+<p>The cross-entropy between <span class="math inline">\(S\)</span> and <span class="math inline">\(D\)</span>, and <span class="math inline">\(S\)</span> and <span class="math inline">\(K\)</span> have been calculated and interpreted. It can be calculated between <span class="math inline">\(D\)</span> and <span class="math inline">\(K\)</span> as well, which is called <em>Potential Information</em>:</p>
+<p><span class="math display">\[PI_K(D)=CE(D,K)=-\sum_{\omega_i}P_D(\omega_i) \cdot \log{P_K(\omega_i)} \tag{8}\label{potential_information}\]</span></p>
+<p><em>Potential Information</em> indicates the expectation of surprise by observing <span class="math inline">\(D\)</span> while knowing <span class="math inline">\(K\)</span> already. Naturally, it is the upper boundary of <em>Informativeness</em>, i.e., the maximum new information that input documents can bring to the user.</p>
+<h3 id="experiments">Experiments</h3>
+<p><img src="20210901.png" /></p>
+<ul>
+<li>Dataset: TAC-2008 and TAC-2009</li>
+<li>Evaluation: Human judgments measured by Kendall's <span class="math inline">\(\tau\)</span></li>
+<li>Conclusion: <em>Importance</em> method outperforms all the baselines in both generic and update tasks. And <em>Relevance, Redundancy and Informativeness</em> are not particularly strong respectively, but powerful when combined together.</li>
+</ul>
+<h3 id="findings">Findings</h3>
+<ul>
+<li>Current works basically follow the atomic semantic unit assumption.</li>
+<li>By introducing concepts from Information Theory, evaluation metrics of summary quality can be both mathematically and practically meaningful.</li>
+<li>I think proposed metrics in this paper are mainly designed for extractive summarisation methods, because text rephrasing is common in abstractive summarisation method. Maybe it can be adapted in future works.</li>
+<li>In this paper, negative Cross Entropy is used to describe the relevance between source documents and summaries, because its value reflect the diverse between two distributions. Mutual Information, as another important concept in Information Theory, is potential to become a evaluation metric as well.</li>
+</ul>
+<h3 id="reference">Reference</h3>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p><a href="https://arxiv.org/abs/1801.08991">Peyrard, M. (2018). A simple theoretical model of importance for summarization. arXiv preprint arXiv:1801.08991.</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p><a href="https://arxiv.org/abs/1801.08991">Peyrard, M. (2018). A simple theoretical model of importance for summarization. arXiv preprint arXiv:1801.08991.</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p><a href="https://arxiv.org/abs/1801.08991">Peyrard, M. (2018). A simple theoretical model of importance for summarization. arXiv preprint arXiv:1801.08991.</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p><a href="https://www.jstor.org/stable/2236703">Kullback, S., &amp; Leibler, R. A. (1951). On information and sufficiency. The annals of mathematical statistics, 22(1), 79-86.</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5" role="doc-endnote"><p><a href="https://journals.aps.org/pr/abstract/10.1103/PhysRev.106.620">Jaynes, E. T. (1957). Information theory and statistical mechanics. Physical review, 106(4), 620.</a><a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6" role="doc-endnote"><p><a href="https://arxiv.org/abs/1801.08991">Peyrard, M. (2018). A simple theoretical model of importance for summarization. arXiv preprint arXiv:1801.08991.</a><a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>Intensive Reading</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>NLG</tag>
+        <tag>Summarisation</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>搭建博客全过程记录/The Whole Process of Building A Blog via Hexo</title>
+    <url>/2021/08/31/build-blog/</url>
+    <content><![CDATA[<h2 id="前言foreword">前言/Foreword</h2>
+<span id="more"></span>
+<h2 id="安装npmhexoinstall-npmhexo">安装npm&amp;Hexo/Install npm&amp;Hexo</h2>
+<h3 id="npm">npm</h3>
+<h3 id="hexo">Hexo</h3>
+<h2 id="hexo主题及插件安装install-hexo-theme-and-plugins">Hexo主题及插件安装/Install Hexo theme and plugins</h2>
+<h3 id="theme">Theme</h3>
+<p><a href="https://github.com/Shen-Yu/hexo-theme-ayer">ayer</a></p>
+<h3 id="plugins">Plugins</h3>
+]]></content>
+      <categories>
+        <category>Whatever</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+</search>
