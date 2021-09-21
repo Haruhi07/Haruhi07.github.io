@@ -18,12 +18,12 @@
 <h4 id="domain-similarity">Domain Similarity</h4>
 <p>The authors collect corpora from 4 different domains -- News, Review, Biomedical papers and computer science papers. To make the result more convincible, they analised the similarity among the corpora and the pretraining corpus.</p>
 <figure>
-<img src="./20210921/corpora_sim.png" alt="Corpora Similarity" /><figcaption aria-hidden="true">Corpora Similarity</figcaption>
+<img src="corpora_sim.png" alt="Corpora Similarity" /><figcaption aria-hidden="true">Corpora Similarity</figcaption>
 </figure>
 <p>The results of token overlap among those corpora are not suprising. Cosidering this aspect, it's expected to see a bigger improvement on domains with lower token overlap.</p>
 <h4 id="domain-adaptive-pretraining">Domain-Adaptive PreTraining</h4>
 <p>Domain-Adaptive Training is designed straight forward to evaluate the model's performance after continuing pretraining RoBERTA on the corresponding corpus.</p>
-<p><img src="./20210921/result1.png" /></p>
+<p><img src="result1.png" /></p>
 <p>The results shows that the Domain-Adaptive Training does improve the model's performance and the downstream classification task. And it's compatible with our previous expectation.</p>
 <p>To illustrate it is the corresponding in-domain text that improves the model's performance rather than it's because of the additional data. The authors further explore the effect of the corpora with low-relevance , which is shown in the figure as <span class="math inline">\(\not\)</span>DAPT. Both the increase and the decline of the performance is resonable here:</p>
 <ul>
@@ -32,7 +32,7 @@
 </ul>
 <h4 id="task-adaptive-pretraining">Task-Adaptive PreTraining</h4>
 <p>In some downstream tasks, only a narrow subset of the corresponding domain's corpus is needed. In this case, TAPT is suitable to apply in those unlabeled data. Comparing to DAPT, it requires a much smaller but much professional dataset. This trade-off makes its performance competitive with DAPT.</p>
-<p><img src="./20210921/result2.png" /></p>
+<p><img src="result2.png" /></p>
 <p>Obviously, we can expect better performance from DAPT+TAPT, which is shown above.</p>
 <h3 id="takeaways">Takeaways</h3>
 <ul>
@@ -46,8 +46,8 @@
       </categories>
       <tags>
         <tag>NLP</tag>
-        <tag>Word Embedding</tag>
         <tag>ACL</tag>
+        <tag>Word Embedding</tag>
       </tags>
   </entry>
   <entry>
@@ -161,6 +161,7 @@
         <tag>NLP</tag>
         <tag>NLG</tag>
         <tag>Summarisation</tag>
+        <tag>ACL</tag>
       </tags>
   </entry>
   <entry>
