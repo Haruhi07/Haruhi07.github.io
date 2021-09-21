@@ -205,32 +205,11 @@
 <li>The authors take RoBERTA as the baseline to reveal the effect of pretraining in-domain and out-domain.</li>
 <li>Text classificaiton tasks are used to evaluate the capability of the pretrained model. The <code>[CLS]</code> token representation from the final layer is passed to a classification layer for prediction.</li>
 <li>Both high- and low-resource situation are considered in experiments</li>
-</ul>
-<h3 id="main-work">Main Work</h3>
-<h4 id="domain-similarity">Domain Similarity</h4>
-<p>The authors collect corpora from 4 different domains -- News, Review, Biomedical papers and computer science papers. To make the result more convincible, they analised the similarity among the corpora and the pretraining corpus.</p>
-<p><img src="corpora_sim.png" /></p>
-<p>The results of token overlap among those corpora are not suprising. Cosidering this aspect, it's expected to see a bigger improvement on domains with lower token overlap.</p>
-<h4 id="domain-adaptive-pretraining">Domain-Adaptive PreTraining</h4>
-<p>Domain-Adaptive Training is designed straight forward to evaluate the model's performance after continuing pretraining RoBERTA on the corresponding corpus.</p>
-<p><img src="result1.png" /></p>
-<p>The results shows that the Domain-Adaptive Training does improve the model's performance and the downstream classification task. And it's compatible with our previous expectation.</p>
-<p>To illustrate it is the corresponding in-domain text that improves the model's performance rather than it's because of the additional data. The authors further explore the effect of the corpora with low-relevance , which is shown in the figure as <span class="math inline">\(\not\)</span> DAPT. Both the increase and the decline of the performance is resonable here:</p>
-<ul>
-<li>The model is trained on the corpora that is not so relevant, which changes the distribution in vector space and leads to the decline;</li>
-<li>Additional data is introduced to the model, which potentially strengthen the model.</li>
-</ul>
-<h4 id="task-adaptive-pretraining">Task-Adaptive PreTraining</h4>
-<p>In some downstream tasks, only a narrow subset of the corresponding domain's corpus is needed. In this case, TAPT is suitable to apply in those unlabeled data. Comparing to DAPT, it requires a much smaller but much professional dataset. This trade-off makes its performance competitive with DAPT.</p>
-<p><img src="result2.png" /></p>
-<p>Obviously, we can expect better performance from DAPT+TAPT, which is shown above.</p>
-<h3 id="takeaways">Takeaways</h3>
-<ul>
-<li>Pretraining is still meaningful to downstream tasks. And the most important contribution of this paper is to verify the intuition people used to have about pretraining and pretrained models.</li>
-<li>In most settings, pretraining model on irrelevant data is detrimental to its downstream tasks. However, it can be useful sometimes because it exposes the model to additional data.</li>
-<li>To achieve the same performance, it's possible to trade off the dataset size for its task-relevance.</li>
-</ul>
- 
+</ul> 
+      <a class="article-more-link" href="/2021/09/21/20210921/"
+        >Read More</a
+      >
+       
       <!-- reward -->
       
     </div>
@@ -738,6 +717,21 @@
     
 
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":145,"height":315},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.8},"log":false});</script></body>
 
 </html>
