@@ -23,7 +23,7 @@
 <p>Domain-Adaptive Training is designed straight forward to evaluate the model's performance after continuing pretraining RoBERTA on the corresponding corpus.</p>
 <p><img src="result1.png" /></p>
 <p>The results shows that the Domain-Adaptive Training does improve the model's performance and the downstream classification task. And it's compatible with our previous expectation.</p>
-<p>To illustrate it is the corresponding in-domain text that improves the model's performance rather than it's because of the additional data. The authors further explore the effect of the corpora with low-relevance , which is shown in the figure as <span class="math inline">\(\not\)</span>DAPT. Both the increase and the decline of the performance is resonable here:</p>
+<p>To illustrate it is the corresponding in-domain text that improves the model's performance rather than it's because of the additional data. The authors further explore the effect of the corpora with low-relevance , which is shown in the figure as <span class="math inline">\(\not\)</span> DAPT. Both the increase and the decline of the performance is resonable here:</p>
 <ul>
 <li>The model is trained on the corpora that is not so relevant, which changes the distribution in vector space and leads to the decline;</li>
 <li>Additional data is introduced to the model, which potentially strengthen the model.</li>
