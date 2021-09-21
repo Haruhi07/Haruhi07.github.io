@@ -1,6 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Don&#39;t Stop Pretraining： Adapt Language Models to Domains and Tasks</title>
+    <url>/2021/09/21/20210921/</url>
+    <content><![CDATA[<h3 id="arthur">Arthur</h3>
+<p>Suchin Gururangan, Ana Marasovic, Swabha Swayamdipta, Kyle Lo, Iz Beltagy, Doug Downey, Noah A. Smith</p>
+<p><br></p>
+<h3 id="abstract-from-the-paper">Abstract from the paper</h3>
+<p>Language models pretrained on text from a wide variety of sources form the foundation of today’s NLP. In light of the success of these broad-coverage models, we investigate whether it is still helpful to tailor a pretrained model to the domain of a target task. We present a study across four domains (biomedical and computer science publications, news, and reviews) and eight classification tasks, showing that a second phase of pretraining in-domain (domain-adaptive pretraining) leads to performance gains, under both high- and low-resource settings. Moreover, adapting to the task’s unlabeled data (task-adaptive pretraining) improves performance even after domain-adaptive pretraining. Finally, we show that adapting to a task corpus augmented us- ing simple data selection strategies is an effec- tive alternative, especially when resources for domain-adaptive pretraining might be unavailable. Overall, we consistently find that multiphase adaptive pretraining offers large gains in task performance.</p>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>The authors take RoBERTA as the baseline to reveal the effect of pretraining in-domain and out-domain.</li>
+<li>Text classificaiton tasks are used to evaluate the capability of the pretrained model. The <code>[CLS]</code> token representation from the final layer is passed to a classification layer for prediction.</li>
+<li>Both high- and low-resource situation are considered in experiments</li>
+</ul>
+<h3 id="main-work">Main Work</h3>
+<h4 id="domain-similarity">Domain Similarity</h4>
+<p>The authors collect corpora from 4 different domains -- News, Review, Biomedical papers and computer science papers. To make the result more convincible, they analised the similarity among the corpora and the pretraining corpus.</p>
+<figure>
+<img src="./20210921/corpora_sim.png" alt="Corpora Similarity" /><figcaption aria-hidden="true">Corpora Similarity</figcaption>
+</figure>
+<p>The results of token overlap among those corpora are not suprising. Cosidering this aspect, it's expected to see a bigger improvement on domains with lower token overlap.</p>
+<h4 id="domain-adaptive-pretraining">Domain-Adaptive PreTraining</h4>
+<p>Domain-Adaptive Training is designed straight forward to evaluate the model's performance after continuing pretraining RoBERTA on the corresponding corpus.</p>
+<p><img src="./20210921/result1.png" /></p>
+<p>The results shows that the Domain-Adaptive Training does improve the model's performance and the downstream classification task. And it's compatible with our previous expectation.</p>
+<p>To illustrate it is the corresponding in-domain text that improves the model's performance rather than it's because of the additional data. The authors further explore the effect of the corpora with low-relevance , which is shown in the figure as <span class="math inline">\(\not\)</span>DAPT. Both the increase and the decline of the performance is resonable here:</p>
+<ul>
+<li>The model is trained on the corpora that is not so relevant, which changes the distribution in vector space and leads to the decline;</li>
+<li>Additional data is introduced to the model, which potentially strengthen the model.</li>
+</ul>
+<h4 id="task-adaptive-pretraining">Task-Adaptive PreTraining</h4>
+<p>In some downstream tasks, only a narrow subset of the corresponding domain's corpus is needed. In this case, TAPT is suitable to apply in those unlabeled data. Comparing to DAPT, it requires a much smaller but much professional dataset. This trade-off makes its performance competitive with DAPT.</p>
+<p><img src="./20210921/result2.png" /></p>
+<p>Obviously, we can expect better performance from DAPT+TAPT, which is shown above.</p>
+<h3 id="takeaways">Takeaways</h3>
+<ul>
+<li>Pretraining is still meaningful to downstream tasks. And the most important contribution of this paper is to verify the intuition people used to have about pretraining and pretrained models.</li>
+<li>In most settings, pretraining model on irrelevant data is detrimental to its downstream tasks. However, it can be useful sometimes because it's exposed to additional data.</li>
+<li>To achieve the same performance, it's possible to trade off the dataset size for its task-relevance.</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Intensive Reading</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>Word Embedding</tag>
+        <tag>ACL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>A Simple Theoretical Model of Importance for Summarization</title>
     <url>/2021/09/01/20210901/</url>
     <content><![CDATA[<h3 id="author">Author</h3>
